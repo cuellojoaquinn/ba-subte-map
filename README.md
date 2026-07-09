@@ -3,6 +3,7 @@
 Mapa interactivo del subte de Buenos Aires, con secciones para aprender de memoria las
 estaciones y saber qué línea tomar según tu barrio.
 
+![Mapa de Subte](ba-subte-map/map-visulization.png)
 ## Qué hace
 
 - **Mapa** — trazado real de las 6 líneas de subte (A, B, C, D, E, H) con sus estaciones,

@@ -1,0 +1,64 @@
+<div class="pantalla">
+  <div class="filtro-lineas">
+    @for (linea of lineas; track linea) {
+      <button
+        type="button"
+        class="chip-linea"
+        [class.activa]="lineasActivas().has(linea)"
+        [style.background]="lineColors[linea]"
+        (click)="toggleLinea(linea)"
+      >
+        {{ linea }}
+      </button>
+    }
+  </div>
+
+  @if (cargando()) {
+    <p class="cargando">Cargando estaciones…</p>
+  } @else if (estacionActual(); as estacion) {
+    <div class="tarjeta" [class.volteada]="volteada()" (click)="voltear()">
+      <div class="tarjeta-interior">
+        <div class="cara cara-frente">
+          <div class="etiqueta">{{ indice() + 1 }} / {{ estacionesFiltradas().length }}</div>
+          @if (haVisto(estacion)) {
+            <div class="visto">ya vista</div>
+          }
+          <div class="nombre">{{ estacion.nombre }}</div>
+          <div class="pista">Tocá o presioná espacio para ver la línea y el barrio</div>
+        </div>
+
+        <div class="cara cara-dorso">
+          <div class="linea" [style.color]="lineColors[estacion.linea]">Línea {{ estacion.linea }}</div>
+          @if (estacion.barrio) {
+            <div class="barrio">Barrio: {{ estacion.barrio }}</div>
+          }
+          @if (estacion.combinaciones.length) {
+            <div class="combinaciones">
+              A pocos metros:
+              @for (cercana of estacion.combinaciones; track cercana.nombre) {
+                <span class="combinacion-chip" [style.background]="lineColors[cercana.linea]">
+                  {{ cercana.nombre }} ({{ cercana.linea }})
+                </span>
+              }
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="controles">
+      <button type="button" (click)="anterior()">← Anterior</button>
+      <button type="button" (click)="aleatoria()">🔀 Random</button>
+      <button type="button" (click)="siguiente()">Siguiente →</button>
+    </div>
+    <div class="pista-teclado">← → para navegar · espacio para voltear</div>
+
+    <div class="progreso">
+      <div class="barra"><i [style.width.%]="progresoPorcentaje()"></i></div>
+      <div class="texto">{{ estacionesVistas().size }} / {{ estaciones().length }} estaciones vistas en total</div>
+      <button type="button" class="reiniciar" (click)="reiniciarProgreso()">Reiniciar progreso</button>
+    </div>
+  } @else {
+    <p class="vacio">Elegí al menos una línea para empezar.</p>
+  }
+</div>

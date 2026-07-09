@@ -1,0 +1,24 @@
+<div class="contenedor">
+  <div id="map"></div>
+
+  <aside class="panel">
+    <h2>Líneas de Subte</h2>
+    @for (item of lineasConBarrios(); track item.linea) {
+      <div
+        class="linea-item"
+        [class.resaltada]="lineasResaltadas().has(item.linea)"
+        [style.--linea-color]="lineColors[item.linea]"
+      >
+        <div class="linea-titulo" [style.color]="lineColors[item.linea]">
+          <span class="dot" [style.background]="lineColors[item.linea]"></span>
+          Línea {{ item.linea }}
+        </div>
+        <div class="barrios-chips">
+          @for (barrio of item.barrios; track barrio) {
+            <span class="chip" [style.--chip-color]="lineColors[item.linea]">{{ barrio }}</span>
+          }
+        </div>
+      </div>
+    }
+  </aside>
+</div>

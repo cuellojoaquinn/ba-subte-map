@@ -1,0 +1,52 @@
+<div class="pantalla">
+  <div class="marcador">
+    <span>Racha actual: <b>{{ estadisticas().racha }}</b></span>
+    <span>Mejor racha: <b>{{ estadisticas().mejorRacha }}</b></span>
+    <span>Aciertos: <b>{{ estadisticas().correctas }}/{{ estadisticas().total }}</b></span>
+  </div>
+
+  @if (cargando()) {
+    <p class="cargando">Cargando preguntas…</p>
+  } @else if (pregunta(); as p) {
+    <div class="pregunta">
+      <div class="etiqueta">
+        Pregunta {{ numeroPregunta() }} ·
+        {{ p.modo === 'linea' ? '¿En qué línea está esta estación?' : '¿En qué barrio está esta estación?' }}
+      </div>
+      <div class="nombre">{{ p.estacion.nombre }}</div>
+    </div>
+
+    <div class="opciones">
+      @for (opcion of p.opciones; track i; let i = $index) {
+        <button
+          type="button"
+          class="opcion"
+          [class.correcta]="respondida() && esCorrecta(opcion)"
+          [class.incorrecta]="respondida() && opcionElegida() === opcion && !esCorrecta(opcion)"
+          [disabled]="respondida()"
+          (click)="responder(opcion)"
+        >
+          <span class="numero">{{ i + 1 }}</span>
+          @if (p.modo === 'linea') {
+            <span class="pastilla" [style.background]="lineColors[opcion]"></span>
+          }
+          {{ opcion }}
+        </button>
+      }
+    </div>
+
+    @if (respondida()) {
+      <div class="feedback" [class.ok]="esCorrecta(opcionElegida() ?? '')" [class.mal]="!esCorrecta(opcionElegida() ?? '')">
+        @if (esCorrecta(opcionElegida() ?? '')) {
+          ¡Correcto!
+        } @else {
+          Era: {{ p.correcta }}
+        }
+      </div>
+      <button type="button" class="siguiente" (click)="nuevaPregunta()">Siguiente →</button>
+      <div class="pista-teclado">enter para la siguiente pregunta</div>
+    } @else {
+      <div class="pista-teclado">usá las teclas 1-4 para responder</div>
+    }
+  }
+</div>

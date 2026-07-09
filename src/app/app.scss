@@ -1,0 +1,89 @@
+// Por debajo de este ancho, el nav pasa de barra superior a bottom tab bar
+// (patrón estándar de navegación mobile: iOS tab bar / Material bottom navigation).
+$breakpoint-mobile: 720px;
+
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+}
+
+.app-nav {
+  flex: 0 0 auto;
+  display: flex;
+  gap: 4px;
+  padding: 10px 16px;
+  background: #14161a;
+  border-bottom: 1px solid #2a2d34;
+
+  .item-nav {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: sans-serif;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #9497a1;
+    text-decoration: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    transition:
+      color 0.15s ease,
+      background-color 0.15s ease;
+
+    .icono {
+      font-size: 15px;
+      line-height: 1;
+    }
+
+    &:hover {
+      color: #f2f0ea;
+    }
+
+    &.activo {
+      color: #14161a;
+      background: #f2f0ea;
+    }
+  }
+}
+
+.app-content {
+  flex: 1;
+  min-height: 0;
+}
+
+@media (max-width: $breakpoint-mobile) {
+  .app-nav {
+    position: fixed;
+    inset: auto 0 0 0;
+    border-bottom: none;
+    border-top: 1px solid #2a2d34;
+    padding: 4px 4px calc(4px + env(safe-area-inset-bottom));
+    gap: 0;
+    z-index: 20;
+
+    .item-nav {
+      flex: 1;
+      flex-direction: column;
+      justify-content: center;
+      gap: 2px;
+      min-height: 48px;
+      padding: 4px;
+      border-radius: 10px;
+      font-size: 10px;
+      text-align: center;
+
+      .icono {
+        font-size: 20px;
+      }
+
+      .etiqueta {
+        line-height: 1.15;
+      }
+    }
+  }
+
+  .app-content {
+    padding-bottom: calc(56px + env(safe-area-inset-bottom));
+  }
+}

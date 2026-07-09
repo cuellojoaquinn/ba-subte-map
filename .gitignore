@@ -11,6 +11,10 @@
 npm-debug.log
 yarn-error.log
 
+# El proyecto usa yarn (ver "packageManager" en package.json): un package-lock.json
+# generado por npm en paralelo puede desincronizarse de yarn.lock.
+package-lock.json
+
 # IDEs and editors
 .idea/
 .project

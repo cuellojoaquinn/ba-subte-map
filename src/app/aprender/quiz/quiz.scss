@@ -1,0 +1,151 @@
+.pantalla {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 24px 16px 40px;
+  font-family: sans-serif;
+}
+
+.marcador {
+  display: flex;
+  justify-content: space-between;
+  background: #fafafa;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  font-family: monospace;
+  font-size: 12.5px;
+  color: #777;
+
+  b {
+    color: #222;
+    font-size: 15px;
+  }
+}
+
+.pregunta {
+  background: #fafafa;
+  border: 1px solid #ddd;
+  border-radius: 14px;
+  padding: 26px 20px;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.etiqueta {
+  font-size: 12px;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+.nombre {
+  font-size: clamp(22px, 6vw, 30px);
+  font-weight: 800;
+}
+
+.opciones {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+@media (max-width: 480px) {
+  .opciones {
+    grid-template-columns: 1fr;
+  }
+}
+
+.opcion {
+  border: 2px solid #ddd;
+  background: #fafafa;
+  color: #222;
+  border-radius: 10px;
+  padding: 14px;
+  font-family: sans-serif;
+  font-weight: 600;
+  font-size: 14.5px;
+  cursor: pointer;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: border-color 0.12s ease;
+
+  &:hover:not(:disabled) {
+    border-color: #999;
+  }
+
+  &:disabled {
+    cursor: default;
+  }
+
+  &.correcta {
+    border-color: #2ecc71;
+    background: rgba(46, 204, 113, 0.12);
+  }
+
+  &.incorrecta {
+    border-color: #e4032e;
+    background: rgba(228, 3, 46, 0.12);
+  }
+}
+
+.pastilla {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+}
+
+.numero {
+  font-family: monospace;
+  font-size: 11px;
+  color: #aaa;
+  flex: 0 0 auto;
+}
+
+.feedback {
+  text-align: center;
+  font-weight: 800;
+  font-size: 18px;
+  margin: 14px 0 0;
+
+  &.ok {
+    color: #2ecc71;
+  }
+
+  &.mal {
+    color: #e4032e;
+  }
+}
+
+.siguiente {
+  display: block;
+  margin: 14px auto 0;
+  background: #f2c200;
+  color: #14161a;
+  border: none;
+  border-radius: 8px;
+  font-family: sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  padding: 13px 26px;
+  min-height: 44px;
+  cursor: pointer;
+}
+
+.pista-teclado {
+  text-align: center;
+  font-size: 11px;
+  font-family: monospace;
+  color: #bbb;
+  margin-top: 10px;
+}
+
+.cargando {
+  text-align: center;
+  color: #999;
+  padding: 40px 0;
+}

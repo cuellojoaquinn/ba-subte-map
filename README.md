@@ -1,59 +1,59 @@
-# BaSubteMap
+# BA Subte Map
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.18.
+Mapa interactivo del subte de Buenos Aires, con secciones para aprender de memoria las
+estaciones y saber qué línea tomar según tu barrio.
 
-## Development server
+## Qué hace
 
-To start a local development server, run:
+- **Mapa** — trazado real de las 6 líneas de subte (A, B, C, D, E, H) con sus estaciones,
+  superpuesto a los barrios de CABA. Cada barrio se colorea según la línea que lo cruza
+  (calculado por intersección geográfica real, no a mano), y al pasar el mouse se resalta
+  tanto el barrio en el mapa como las líneas correspondientes en el panel lateral.
+- **Memorizar** — flashcards por estación: nombre de un lado, línea + barrio + combinaciones
+  del otro. Filtrable por línea, con progreso guardado en el dispositivo.
+- **Quiz** — preguntas al azar ("¿en qué línea/barrio está esta estación?"), con racha y
+  aciertos guardados.
+- **¿Qué subte tomo?** — elegís tu barrio o buscás una estación por nombre y te dice qué
+  líneas y estaciones tenés cerca.
 
-```bash
-ng serve
-```
+Todo (barrio de cada estación, combinaciones entre líneas) se calcula en el momento a partir
+de los datos geográficos reales — no hay una lista escrita a mano que se pueda desactualizar.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Stack
 
-## Code scaffolding
+- [Angular 21](https://angular.dev/) standalone, **zoneless** (sin `zone.js`; el estado
+  reactivo se maneja con `signal()`).
+- [Leaflet](https://leafletjs.com/) para el mapa base.
+- [Turf.js](https://turfjs.org/) para los cálculos geoespaciales (qué barrio cruza qué línea,
+  en qué barrio cae cada estación, qué estaciones de distinta línea están a pocos metros).
+- Datos abiertos de [data.buenosaires.gob.ar](https://data.buenosaires.gob.ar/) (líneas y
+  estaciones de subte, barrios de CABA).
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Desarrollo
 
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+Requiere [Yarn](https://yarnpkg.com/) (ver `packageManager` en `package.json`).
 
 ```bash
-ng test
+yarn install
+yarn start      # levanta el servidor de desarrollo en http://localhost:4200
+yarn test       # corre los tests con Vitest
+yarn build      # build de producción en dist/
 ```
 
-## Running end-to-end tests
+## Estructura
 
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
 ```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+src/app/
+  map/                 mapa real con Leaflet (barrios + líneas + estaciones)
+  aprender/
+    memorizar/         flashcards
+    quiz/               preguntas al azar
+    donde/              buscador por barrio / estación
+  services/
+    subte-barrios.ts    carga y cruza los datos geográficos (barrios, líneas, estaciones)
+    progreso.ts         progreso de memorizar/quiz persistido en localStorage
+public/
+  barrios.geojson           barrios de CABA
+  subte-lineas.geojson      trazado real de las líneas
+  subte-estaciones.geojson  estaciones (paradas)
+```

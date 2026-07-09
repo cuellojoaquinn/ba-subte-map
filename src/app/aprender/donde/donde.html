@@ -1,0 +1,86 @@
+<div class="pantalla">
+  @if (cargando()) {
+    <p class="cargando">Cargando estaciones…</p>
+  } @else {
+    <div class="caja">
+      <label for="barrio-select">Elegí tu barrio</label>
+      <select id="barrio-select" (change)="onBarrioChange($event)">
+        <option value="">— elegir —</option>
+        @for (barrio of barrios(); track barrio) {
+          <option [value]="barrio">{{ barrio }}</option>
+        }
+      </select>
+
+      @if (!barrioSeleccionado()) {
+        <p class="vacio">Elegí un barrio para ver qué líneas y estaciones tenés cerca.</p>
+      } @else if (!estacionesDelBarrio().length) {
+        <p class="vacio">No hay estaciones registradas en ese barrio.</p>
+      } @else {
+        <p class="conteo">
+          {{ estacionesDelBarrio().length }}
+          {{ estacionesDelBarrio().length === 1 ? 'estación' : 'estaciones' }} en {{ barrioSeleccionado() }}
+        </p>
+        <div class="resultados">
+          @for (estacion of estacionesDelBarrio(); track estacion.nombre + estacion.linea) {
+            <div class="fila">
+              <div class="pastilla" [style.background]="lineColors[estacion.linea]">{{ estacion.linea }}</div>
+              <div class="info">
+                <b>{{ estacion.nombre }}</b>
+                @if (estacion.combinaciones.length) {
+                  <span>
+                    A pocos metros: {{ estacion.combinaciones[0].nombre }} ({{ estacion.combinaciones[0].linea }})
+                  </span>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+    <div class="caja">
+      <label for="station-search">O buscá directamente una estación</label>
+      <div class="campo-busqueda">
+        <input
+          #buscadorInput
+          type="text"
+          id="station-search"
+          placeholder="Ej: Callao, Once, Palermo..."
+          (input)="onBusquedaInput($event)"
+        />
+        @if (busqueda()) {
+          <button
+            type="button"
+            class="limpiar"
+            (click)="limpiarBusqueda(buscadorInput)"
+            aria-label="Limpiar búsqueda"
+          >
+            ✕
+          </button>
+        }
+      </div>
+
+      @if (busqueda().trim().length >= 2) {
+        @if (!resultadosBusqueda().length) {
+          <p class="vacio">Sin resultados.</p>
+        } @else {
+          <p class="conteo">
+            {{ resultadosBusqueda().length }}
+            {{ resultadosBusqueda().length === 1 ? 'resultado' : 'resultados' }}
+          </p>
+          <div class="resultados">
+            @for (estacion of resultadosBusqueda(); track estacion.nombre + estacion.linea) {
+              <div class="fila">
+                <div class="pastilla" [style.background]="lineColors[estacion.linea]">{{ estacion.linea }}</div>
+                <div class="info">
+                  <b [innerHTML]="resaltar(estacion.nombre)"></b>
+                  <span>{{ estacion.barrio ?? 'Barrio no identificado' }}</span>
+                </div>
+              </div>
+            }
+          </div>
+        }
+      }
+    </div>
+  }
+</div>
